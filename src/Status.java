@@ -9,6 +9,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.util.Observable;
+import java.util.Observer;
+
 class EventHandlerToggle implements EventHandler<ActionEvent>
 {
 	private Lane lane;
@@ -42,10 +45,14 @@ class EventHandlerClose implements EventHandler<WindowEvent>
 	@Override
 	public void handle(WindowEvent windowEvent)
 	{
+		for (Lane lane : bowling.lanes)
+		{
+			lane.deleteObserver(this.status);
+		}
 	}
 }
 
-public class Status extends Stage
+public class Status extends Stage implements Observer
 {
 	private Bowling bowling;
 	private Pane rootPane;
@@ -54,6 +61,10 @@ public class Status extends Stage
 	{
 		this.bowling = bowling;
 		this.rootPane = new Pane();
+		for (Lane lane : bowling.lanes)
+		{
+			lane.addObserver(this);
+		}
 		setTitle("Status");
 		this.rootPane.setMinSize(200, 200);
 		draw();
@@ -78,5 +89,11 @@ public class Status extends Stage
 			button.setOnAction(new EventHandlerToggle(lane, this));
 			hBox.getChildren().add(button);
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		draw();
 	}
 }
