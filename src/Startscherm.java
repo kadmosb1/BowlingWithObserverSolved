@@ -22,11 +22,11 @@ class EventHandlerNewStatus implements EventHandler<ActionEvent>
     }
 }
 
-public class Bowlingbanen extends Application {
+public class Startscherm extends Application {
 
     private Bowling bowling;
 
-    public Bowlingbanen () {
+    public Startscherm() {
         this.bowling = new Bowling ();
     }
 
